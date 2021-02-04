@@ -9,10 +9,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 
+    <style>
+        #my-gallery-page {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .img-size {
+            height: 70%;
+        }    
+    </style>
+
     <title>Images Gallery</title>
 </head>
 <body>
-    <!-- LOGIN - PAGE -->
+    <!-- LOGIN-PAGE -->
     <section id="login-page">
         <div class="bg-video">
             <!-- <video class="bg-video-content" autoplay muted loop>
@@ -23,21 +34,52 @@
         </div>
         <div class="center">
             <h1 style="margin-bottom: 3rem;" class="welcome">Welcome To My Gallery</h1>
-            <form>
+            <form id="login-form">
                 <div class="uk-margin">
                     <div class="uk-inline">
                         <span class="uk-form-icon" uk-icon="icon: user"></span>
-                        <input id="email" class="uk-input" type="email" placeholder="email here">
+                        <input id="email-login" class="uk-input" type="email" placeholder="email here">
                     </div>
                 </div>
             
                 <div class="uk-margin">
                     <div class="uk-inline">
                         <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
-                        <input id="password" class="uk-input" type="password" placeholder="password here">
+                        <input id="password-login" class="uk-input" type="password" placeholder="password here">
                     </div>
                 </div>
                 <button type="submit" class="login-btn uk-button uk-button-primary">Login</button>
+            
+            </form>            
+        </div>
+    </section>
+
+    <!-- REGISTER-PAGE -->
+    <section id="register-page">
+        <div class="bg-video">
+            <!-- <video class="bg-video-content" autoplay muted loop>
+                <source src="img/video.mp4" type="video/mp4">
+                <source src="img/video.webm" type="video/webm">
+                    your browser is not supported
+            </video> -->
+        </div>
+        <div class="center">
+            <h1 style="margin-bottom: 3rem;" class="welcome">Welcome To My Gallery</h1>
+            <form id="register-form">
+                <div class="uk-margin">
+                    <div class="uk-inline">
+                        <span class="uk-form-icon" uk-icon="icon: user"></span>
+                        <input id="email-register" class="uk-input" type="email" placeholder="email here">
+                    </div>
+                </div>
+            
+                <div class="uk-margin">
+                    <div class="uk-inline">
+                        <span class="uk-form-icon uk-form-icon-flip" uk-icon="icon: lock"></span>
+                        <input id="password-register" class="uk-input" type="password" placeholder="password here">
+                    </div>
+                </div>
+                <button type="submit" class="login-btn uk-button uk-button-primary">Register</button>
             
             </form>            
         </div>
@@ -52,7 +94,7 @@
                     <li>
                         <a href="#"><i class="logo fas fa-camera-retro"></i></a>
                     </li>
-                    <li><a href="#">My Gallery</a></li>
+                    <li><a href="#">My Favorites</a></li>
                 </ul>
         
             </div>
@@ -60,7 +102,8 @@
         
                 <ul class="uk-navbar-nav">
                     <li>
-                        <a href="#">Logout</a>
+                        <a id= "register-link" href="#">Register</a>
+                        <a onclick= "logout()" id= "logout-link" href="#">Logout</a>
                     </li>
                 </ul>
             </div>
@@ -71,10 +114,10 @@
         <section id="home-page">
 
             <!-- CARD -->
-            <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
+            <!-- <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
                 <i class="bookmark far fa-plus-square"></i>
                 <img src="https://images.unsplash.com/photo-1587613753310-0ba642887227?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0MTc4MH0" alt="image">
-            </div>
+            </div> -->
 
         </section>
 
@@ -83,10 +126,10 @@
         <section id="my-gallery-page">
             
             <!-- CARD -->
-            <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
+            <!-- <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
                 <i class="trash far fa-minus-square"></i>
                 <img src="https://images.unsplash.com/photo-1587613753310-0ba642887227?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0MTc4MH0" alt="image">
-            </div>
+            </div> -->
 
         </section>
     </section>
@@ -95,5 +138,129 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/js/uikit-icons.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    
+    <script>
+        const baseUrl = "http://localhost:3000/"
+
+        function checkAccessToken() {
+            if (!localStorage.getItem("access_token")) {
+                $("#login-page").show()
+                $("#register-link").show()
+                $("#logout-link").hide()
+            } else {
+                $("#login-page").hide()
+                $("#register-link").hide()
+                $("#logout-link").show()
+                $("#register-page").hide()
+                getImage()
+            }
+        }
+
+        function login() {
+            const email = $("#email-login").val()
+            const password = $("#password-login").val()
+
+            $.ajax({
+                url: baseUrl + "users/login",
+                method: "POST",
+                data: {
+                    email,
+                    password
+                }
+            })
+
+            .done(response => {
+                const token = response.access_token;
+                localStorage.setItem("access_token", token)
+                checkAccessToken()
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+
+            .always((_) => {
+                console.log("always")
+                $("#login-form").trigger("reset")
+            })
+        }
+
+        function logout() {
+            localStorage.clear()
+            checkAccessToken()
+            $("#my-gallery-page").empty()
+        }
+
+        function register() {
+            const email = $("#email-register").val()
+            const password = $("#password-register").val()
+
+            $.ajax({
+                url: baseUrl + "users/register",
+                method: "POST",
+                data: {
+                    email,
+                    password
+                }
+            })
+
+            .done(response => {
+                checkAccessToken()
+                $("#register-form").trigger("reset")
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+        }
+
+        function getImage() {
+            $.ajax({
+                url: baseUrl + "images/",
+                method: "GET",
+                headers: {
+                    access_token: localStorage.getItem("access_token")
+                }
+            })
+
+            .done(response => {
+                response.forEach((element) => {
+                    $("#my-gallery-page").append(`
+                    <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
+                        <img class= "img-size" src="${element}">
+                        <button onclick= "like(${element})">Like</button>
+                    </div>
+                    `)
+                })
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+
+            .always(_ => {
+                console.log("always")
+            })
+        }
+
+        function like(imageUrl) {
+            console.log("masukkkkkkkk")
+        }
+
+        $(document).ready(() => {
+            checkAccessToken()
+            $("#login-form").on("submit", (e) => {
+                e.preventDefault()
+                login()
+            })
+
+            $("#register-form").on("submit", (e) => {
+                e.preventDefault()
+                register()
+            })
+        })
+    </script>
 </body>
 </html>
