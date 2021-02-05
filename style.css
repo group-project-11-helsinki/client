@@ -27,8 +27,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw;
+    height: 100vh; */
 }
 
 .center {
@@ -46,16 +46,10 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
+    height: 20%;
     width: 100%;
     z-index: -1;
     opacity: .6;
-}
-
-.bg-video-content {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
 }
 
 .welcome {
@@ -119,4 +113,23 @@ body {
     font-weight: bold;
     cursor: pointer;
     font-weight: bold;
+}
+
+.g-signin2{
+    width: 100%;
+    text-align: center;
+    margin-left: 50px;
+    margin-top: 10px;
+}
+
+.corona-box{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+}
+
+h4{
+    padding: 0 10px;
+    margin: 0 auto;
 }
