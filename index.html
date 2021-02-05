@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="298563556496-9bnfkt5ufoqhe43rmeuedhrrbbivoha2.apps.googleusercontent.com">
     <!-- UIkit CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
 
     <style>
         #my-gallery-page {
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <button type="submit" class="login-btn uk-button uk-button-primary">Login</button>
-            
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
             </form>            
         </div>
     </section>
@@ -133,7 +133,7 @@
 
         </section>
     </section>
-    
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/js/uikit-icons.min.js"></script>
@@ -189,6 +189,10 @@
 
         function logout() {
             localStorage.clear()
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut()
+            .then(() => {
+            })
             checkAccessToken()
             $("#my-gallery-page").empty()
         }
@@ -255,12 +259,28 @@
                 e.preventDefault()
                 login()
             })
-
             $("#register-form").on("submit", (e) => {
                 e.preventDefault()
                 register()
             })
         })
+
+        function onSignIn(googleUser) {
+            let id_token = googleUser.getAuthResponse().id_token;
+            $.ajax({
+                method: 'POST',
+                url: `${baseUrl}users/googleLogin`,
+                data: { idToken: id_token }
+            })
+                .done(({ access_token }) => {
+                    localStorage.setItem("access_token", access_token)
+                    checkAccessToken()
+                })
+                .fail(err => {
+                    console.log(err)
+                })
+        }
+
     </script>
 </body>
 </html>
