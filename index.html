@@ -133,6 +133,10 @@
             </div> -->
 
         </section>
+
+        <section id="my-favorite-page">
+
+        </section>
     </section>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -176,6 +180,18 @@
             $("#logout-link").hide()
             $("#register-page").hide()
             $("#login-link").hide()
+            $("#my-favorite-page").hide()
+            $("#my-gallery-page").hide()
+        }
+
+        function favoriteLink() {
+            $("#login-page").hide()
+            $("#register-link").hide()
+            $("#logout-link").show()
+            $("#register-page").hide()
+            $("#login-link").hide()
+            $("#my-favorite-page").show()
+            $("#my-gallery-page").hide()
         }
 
         function login() {
@@ -216,6 +232,7 @@
             })
             checkAccessToken()
             $("#my-gallery-page").empty()
+            $("#my-favorite-page").hide()
         }
 
         function register() {
@@ -251,8 +268,7 @@
             })
 
             .done(response => {
-                response.forEach((element) => {
-                    console.log(element)
+                response.forEach((element) => { 
                     $("#my-gallery-page").append(`
                     <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
                         <img class= "img-size" src="${element}">
@@ -272,7 +288,6 @@
         }
 
         function likeImage(imageUrl) {
-            console.log(imageUrl)
             $.ajax({
                 url: baseUrl + "images/favorite",
                 method: "POST",
@@ -296,6 +311,62 @@
                 console.log("always")
             })
             
+        }
+
+        function getFavorite() {
+            $("#my-favorite-page").empty()
+            $.ajax({
+                url: baseUrl + "images/favorite",
+                method: "GET",
+                headers: {
+                    access_token: localStorage.getItem("access_token")
+                }
+            })
+            .done(response => {
+                response.forEach((element) => { 
+                    $("#my-favorite-page").append(`
+                    <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
+                        <img class= "img-size" src="${element.imageUrl}">
+                        <button onclick="deleteFavorite(${element.id})">Delete Image</button>
+                    </div>
+                    `)
+                })
+                favoriteLink()
+                console.log(response)
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+
+            .always(_ => {
+                console.log("always")
+            })
+        }
+
+        function deleteFavorite(id) {
+            console.log(id, '<<<<<<<<<<<<<<<')
+            $.ajax({
+                url: baseUrl + `images/favorite/${id}`,
+                method: "DELETE",
+                headers: {
+                    access_token: localStorage.getItem("access_token")
+                }
+            })
+
+            .done(response => {
+                $("#my-favorite-page").empty()
+                getFavorite()
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+
+            .always(_ => {
+                console.log("always")
+            })
+
         }
 
         $(document).ready(() => {
