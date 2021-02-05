@@ -94,7 +94,7 @@
                     <li>
                         <a href="#"><i class="logo fas fa-camera-retro"></i></a>
                     </li>
-                    <li><a href="#">My Favorites</a></li>
+                    <li><a onclick="getFavorite()"href="#">My Favorites</a></li>
                 </ul>
         
             </div>
@@ -102,8 +102,9 @@
         
                 <ul class="uk-navbar-nav">
                     <li>
-                        <a id= "register-link" href="#">Register</a>
+                        <a onclick="registerLink()" id= "register-link" href="#">Register</a>
                         <a onclick= "logout()" id= "logout-link" href="#">Logout</a>
+                        <a onclick= "loginLink()" id= "login-link" href="#">Login</a>
                     </li>
                 </ul>
             </div>
@@ -149,13 +150,32 @@
                 $("#login-page").show()
                 $("#register-link").show()
                 $("#logout-link").hide()
+                $("#register-page").hide()
+                $("#login-link").hide()
             } else {
                 $("#login-page").hide()
                 $("#register-link").hide()
                 $("#logout-link").show()
                 $("#register-page").hide()
+                $("#login-link").hide()
                 getImage()
             }
+        }
+
+        function registerLink() {
+            $("#login-page").hide()
+            $("#register-link").hide()
+            $("#logout-link").hide()
+            $("#register-page").show()
+            $("#login-link").show()
+        }
+
+        function loginLink() {
+            $("#login-page").show()
+            $("#register-link").show()
+            $("#logout-link").hide()
+            $("#register-page").hide()
+            $("#login-link").hide()
         }
 
         function login() {
@@ -192,6 +212,7 @@
             var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut()
             .then(() => {
+                console.log("user sign out")
             })
             checkAccessToken()
             $("#my-gallery-page").empty()
@@ -231,10 +252,11 @@
 
             .done(response => {
                 response.forEach((element) => {
+                    console.log(element)
                     $("#my-gallery-page").append(`
                     <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
                         <img class= "img-size" src="${element}">
-                        <button onclick= "like(${element})">Like</button>
+                        <button onclick="likeImage('${element}')">Add to Favorite</button>
                     </div>
                     `)
                 })
@@ -249,8 +271,31 @@
             })
         }
 
-        function like(imageUrl) {
-            console.log("masukkkkkkkk")
+        function likeImage(imageUrl) {
+            console.log(imageUrl)
+            $.ajax({
+                url: baseUrl + "images/favorite",
+                method: "POST",
+                headers: {
+                    access_token: localStorage.getItem("access_token")
+                },
+                data: {
+                    imageUrl
+                }
+            })
+
+            .done(response => {
+
+            })
+
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+
+            .always(_ => {
+                console.log("always")
+            })
+            
         }
 
         $(document).ready(() => {
