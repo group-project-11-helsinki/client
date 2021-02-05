@@ -8,29 +8,65 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/css/uikit.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
-    <style>
-        #my-gallery-page {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .img-size {
-            height: 70%;
-        }    
-    </style>
 
     <title>Images Gallery</title>
 </head>
 <body>
+    <!-- MAIN PAGE -->
+    <section id="main-page">
+        <nav class="uk-navbar-container navbar-custom" uk-navbar>
+            <div class="uk-navbar-left">
+        
+                <ul class="uk-navbar-nav">
+                    <!-- <li>
+                        <a href="#"><i class="logo fas fa-camera-retro"></i></a>
+                    </li> -->
+                    <li><a onclick="getFavorite()"href="#">My Favorites</a></li>
+                </ul>
+        
+            </div>
+            <div class="uk-navbar-right">
+        
+                <ul class="uk-navbar-nav">
+                    <li>
+                        <a onclick="registerLink()" id= "register-link" href="#">Register</a>
+                        <a onclick= "logout()" id= "logout-link" href="#">Logout</a>
+                        <a onclick= "loginLink()" id= "login-link" href="#">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Corona Virus -->
+        <section id="corona-page">
+            <!-- <div>
+                
+            </div> -->
+        </section>
+
+        <!-- GALLERY - SECTION -->
+
+        <section id="my-gallery-page">
+            
+            <!-- CARD -->
+            <!-- <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
+                <i class="trash far fa-minus-square"></i>
+                <img src="https://images.unsplash.com/photo-1587613753310-0ba642887227?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0MTc4MH0" alt="image">
+            </div> -->
+
+        </section>
+      
+        <section id="my-favorite-page">
+
+        </section>
+    </section>
+
     <!-- LOGIN-PAGE -->
     <section id="login-page">
         <div class="bg-video">
-            <!-- <video class="bg-video-content" autoplay muted loop>
-                <source src="img/video.mp4" type="video/mp4">
-                <source src="img/video.webm" type="video/webm">
-                    your browser is not supported
-            </video> -->
+            <h2>Quotes</h2>
         </div>
         <div class="center">
             <h1 style="margin-bottom: 3rem;" class="welcome">Welcome To My Gallery</h1>
@@ -57,11 +93,6 @@
     <!-- REGISTER-PAGE -->
     <section id="register-page">
         <div class="bg-video">
-            <!-- <video class="bg-video-content" autoplay muted loop>
-                <source src="img/video.mp4" type="video/mp4">
-                <source src="img/video.webm" type="video/webm">
-                    your browser is not supported
-            </video> -->
         </div>
         <div class="center">
             <h1 style="margin-bottom: 3rem;" class="welcome">Welcome To My Gallery</h1>
@@ -85,59 +116,7 @@
         </div>
     </section>
 
-    <!-- MAIN PAGE -->
-    <section id="main-page">
-        <nav class="uk-navbar-container navbar-custom" uk-navbar>
-            <div class="uk-navbar-left">
-        
-                <ul class="uk-navbar-nav">
-                    <li>
-                        <a href="#"><i class="logo fas fa-camera-retro"></i></a>
-                    </li>
-                    <li><a onclick="getFavorite()"href="#">My Favorites</a></li>
-                </ul>
-        
-            </div>
-            <div class="uk-navbar-right">
-        
-                <ul class="uk-navbar-nav">
-                    <li>
-                        <a onclick="registerLink()" id= "register-link" href="#">Register</a>
-                        <a onclick= "logout()" id= "logout-link" href="#">Logout</a>
-                        <a onclick= "loginLink()" id= "login-link" href="#">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
 
-        <!-- HOME -SECTION -->
-
-        <section id="home-page">
-
-            <!-- CARD -->
-            <!-- <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
-                <i class="bookmark far fa-plus-square"></i>
-                <img src="https://images.unsplash.com/photo-1587613753310-0ba642887227?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0MTc4MH0" alt="image">
-            </div> -->
-
-        </section>
-
-        <!-- GALLERY - SECTION -->
-
-        <section id="my-gallery-page">
-            
-            <!-- CARD -->
-            <!-- <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
-                <i class="trash far fa-minus-square"></i>
-                <img src="https://images.unsplash.com/photo-1587613753310-0ba642887227?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0MTc4MH0" alt="image">
-            </div> -->
-
-        </section>
-
-        <section id="my-favorite-page">
-
-        </section>
-    </section>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/js/uikit.min.js"></script>
@@ -156,12 +135,15 @@
                 $("#logout-link").hide()
                 $("#register-page").hide()
                 $("#login-link").hide()
+                getQuotes()
+                
             } else {
                 $("#login-page").hide()
                 $("#register-link").hide()
                 $("#logout-link").show()
                 $("#register-page").hide()
                 $("#login-link").hide()
+                getCorona()
                 getImage()
             }
         }
@@ -233,6 +215,7 @@
             checkAccessToken()
             $("#my-gallery-page").empty()
             $("#my-favorite-page").hide()
+            $("#corona-page").empty()
         }
 
         function register() {
@@ -258,6 +241,56 @@
             })
         }
 
+        function getCorona() {
+            $.ajax({
+                url: baseUrl + "images/covid",
+                method: "GET",
+                headers: {
+                    access_token: localStorage.getItem("access_token")
+                }
+            })
+
+            .done(response => {
+                $("#corona-page").empty()
+                $("#corona-page").append(`
+                <div id="corona-box" class="corona-box">
+                    <h4>Country: ${response.country}</h4>
+                    <h4>Confirmed: ${response.confirmed}</h4>
+                    <h4>Recovered: ${response.recovered}</h4>
+                    <h4>Deaths: ${response.deaths}</h4>
+                </div>
+                `)
+            })
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+            .always(_ => {
+                console.log("always")
+            })
+        }
+
+        function getQuotes() {
+            $.ajax({
+                url: baseUrl + "users/quotes",
+                method: "GET",
+            })
+
+            .done(response => {
+                $("#corona-page").empty()
+                $("#corona-page").append(`
+                <div id="corona-box" class="corona-box">
+                    <h4>${response}</h4>
+                </div>
+                `)
+            })
+            .fail((xhr, text) => {
+                console.log(xhr, text)
+            })
+            .always(_ => {
+                console.log("always")
+            })
+        }
+
         function getImage() {
             $.ajax({
                 url: baseUrl + "images/",
@@ -268,7 +301,7 @@
             })
 
             .done(response => {
-                response.forEach((element) => { 
+                response.forEach((element) => {
                     $("#my-gallery-page").append(`
                     <div class="card-custom uk-card uk-card-default uk-card-hover uk-card-body">
                         <img class= "img-size" src="${element}">
